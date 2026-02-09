@@ -1,0 +1,66 @@
+name: LicenseGuard Agent Team Session
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Phase to run'
+        required: true
+        default: 'discovery'
+        type: choice
+        options:
+          - discovery
+          - design
+          - build
+          - launch
+          - full
+      save_output:
+        description: 'Save output to sessions folder'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  run-agent-session:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic
+
+      - name: Run Agent Team Session
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          cd licenseguard
+          python run_with_claude_ci.py ${{ inputs.phase }}
+
+      - name: Upload session output
+        if: ${{ inputs.save_output }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: session-${{ inputs.phase }}-${{ github.run_number }}
+          path: licenseguard/sessions/*.md
+          retention-days: 90
+
+      - name: Commit session output
+        if: ${{ inputs.save_output }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add licenseguard/sessions/*.md
+          git diff --staged --quiet || git commit -m "Add agent session output: ${{ inputs.phase }} phase
+
+          Run #${{ github.run_number }}
+
+          Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+          git push

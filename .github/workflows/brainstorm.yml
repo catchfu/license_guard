@@ -1,0 +1,52 @@
+name: Brainstorm New Ideas
+
+on:
+  workflow_dispatch:
+    inputs:
+      niche:
+        description: 'Niche or problem area to brainstorm'
+        required: true
+        default: 'tools for indie developers'
+        type: string
+
+jobs:
+  brainstorm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic
+
+      - name: Run Brainstorming Session
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python run_with_claude.py "${{ inputs.niche }}"
+
+      - name: Upload session output
+        uses: actions/upload-artifact@v4
+        with:
+          name: brainstorm-${{ github.run_number }}
+          path: sessions/*.md
+          retention-days: 90
+
+      - name: Commit session output
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add sessions/*.md
+          git diff --staged --quiet || git commit -m "Add brainstorm session: ${{ inputs.niche }}
+
+          Run #${{ github.run_number }}
+
+          Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+          git push
