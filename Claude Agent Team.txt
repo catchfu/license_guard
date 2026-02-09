@@ -1,0 +1,76 @@
+Claude Agent Team
+https://code.claude.com/docs/en/agent-teams
+
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+
+On Windows
+C:\Users\qqian\.claude/settings.json
+
+
+Start your first agent team
+After enabling agent teams, tell Claude to create an agent team and describe the task and the team structure you want in natural language. 
+Claude creates the team, spawns teammates, and coordinates work based on your prompt.
+This example works well because the three roles are independent and can explore the problem without waiting on each other:
+--prompts--
+I'm designing a CLI tool that helps developers track TODO comments across
+their codebase. Create an agent team to explore this from different angles: one
+teammate on UX, one on technical architecture, one playing devil's advocate.
+-----
+
+
+Create a team with 4 teammates to refactor these modules in parallel.
+Use Sonnet for each teammate.
+
+Spawn an architect teammate to refactor the authentication module.
+Require plan approval before they make any changes.
+
+Create an agent team to review PR #142. Spawn three reviewers:
+- One focused on security implications
+- One checking performance impact
+- One validating test coverage
+Have them each review and report findings.
+
+Users report the app exits after one message instead of staying connected.
+Spawn 5 agent teammates to investigate different hypotheses. Have them talk to
+each other to try to disprove each other's theories, like a scientific
+debate. Update the findings doc with whatever consensus emerges.
+
+
+Spawn a security reviewer teammate with the prompt: "Review the authentication module
+at src/auth/ for security vulnerabilities. Focus on token handling, session
+management, and input validation. The app uses JWT tokens stored in
+httpOnly cookies. Report any issues with severity ratings."
+
+-------own
+
+I'm designing a tool on a niche market and earn passive money. Create an agent team to explore brainstorm idears from different angles: one
+teammate on generate ideas, one on review on market business predental, one on technical implementation and architecture  , one playing devil's advocate.
+
+
+
+----------------
+哇哦，Claude 的 Agent Team 真的太猛了！一个小时就把原本 geek 味十足的命令行工具，改造成浏览器里点点就能用的网页版，简直像开了挂😂。
+
+我一直想把我发微信公众号“零代码”发布工具完成，现在终于具备了雏形 ，核心功能如下：
+✅AI 写作（产品文/技术文）+封面+信息图生成  
+✅Markdown 编辑 + 实时预览 + 3套主题切换（科技/简约/商务）  
+✅配置 appid/appsecret 后，一键推到公众号草稿箱  
+
+不过还没完全开源，因为生图功能（封面&信息图）还没配密钥。等密钥搞定就彻底解放了！
+
+最爽的是整个过程我几乎没写几行代码，全靠 Claude 的 Agent Team 并行干活：
+✅PM Agent 定需求  
+✅前端+设计师 Agent 搭界面  
+✅后端 Agent 搞微信集成  
+✅Tech Writer 优化提示词  
+✅QA Agent 狂测 bug……
+
+我录了个演示视频，展示从零配置 Agent Team，到工具跑通的全过程。视频里能看到界面操作，超级直观！
+
+谁想要使用工具的，可以直接回“+1”或“想要”，奶爸到时候加班肝出来分享给大家使用～🚀
+
+
